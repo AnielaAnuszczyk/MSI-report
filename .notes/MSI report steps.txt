@@ -4,6 +4,7 @@ MSI report steps
 * working directory
 * data directory
 * year range
+* Citations for bycatch estimates to be included in SARs to most recent (replace Carretta 2023, Jannot et al 2021)
 
 (1b - optional) run chunks of SeriousInjuryExtract_misc.r for project-specific purposes (such as generating species-specific summaries of MSI x interaction-type)
 
@@ -12,12 +13,12 @@ MSI report steps
 (3) HCM_SI_Report.Rmd
 * Word file is saved in same folder as the sourced file: "SeriousInjuryExtract.R".  This is ultimately moved to NOAA library (and then removed from this GitHub folder) 
 * check years are correct
-* update Data Availability link for 5-year data
 * knit
 * check word doc, including careful check of tables
 
 (4) Clean up
 * copy 5-year and all-time CSVs to MSI-report/data folder if not written there directly
+* test data link(S) in Data Availability section of MSI report word doc
 * commit and push changes to scripts and data files in MSI-report repo
 
 (5) Word doc edits:
