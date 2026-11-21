@@ -9,11 +9,11 @@ in the [SWFSC/MSI-data](https://github.com/SWFSC/MSI-data) repository.
 
 Most recent published report: 
 
-Carretta, James V., Justin Greenman, Kristin Wilkinson, Lauren Saez, Dan Lawson, 
-Justin Viezbicke, and K. Alexandra Curtis. 2025. Sources of human-related injury 
-and mortality for U.S. Pacific West Coast marine mammal stock assessments, 2019-2023. 
-U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-728. 
-https://doi.org/10.25923/sxy3-0n21
+Moore, Jeffrey, K. Alexandra Curtis, Justin Greenman, Kristin Wilkinson, Lauren Saez, 
+Dan Lawson, Justin Viezbicke, and James V. Carretta. 2026. Sources of human-related injury 
+and mortality for U.S. Pacific West Coast marine mammal stock assessments, 2020-2024. 
+U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-743. 
+https://doi.org/10.25923/wavw-w431
 
 Data associated with this report, as cited in the Data Availability statement, 
 are available in the [data folder of this repository](https://github.com/SWFSC/MSI-report/tree/main/data). 
