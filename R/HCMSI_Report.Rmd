@@ -1,14 +1,16 @@
 ---
-title: "SOURCES OF HUMAN-RELATED INJURY AND MORTALITY FOR U.S. PACIFIC WEST COAST MARINE MAMMAL STOCK ASSESSMENTS, 2020-2024"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: word_document
-toc: yes
+#title: "SOURCES OF HUMAN-RELATED INJURY AND MORTALITY FOR U.S. PACIFIC WEST COAST MARINE MAMMAL STOCK ASSESSMENTS, 2020–2024"
+#date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  word_document:
+    toc: yes
 ---
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, hide.results=TRUE}
 # set local file path where SeriousInjuryExtract.R lives
 # note this is where report will initially be saved
 source("C:/jeff/github/MSI-report/R/SeriousInjuryExtract.R") 
+# is the NOAA logo in this source? Needs path if not
 
 # load("SeriousInjuryReport.RData")
 library(ggplot2)
@@ -17,39 +19,158 @@ library(officer)
 library(dplyr)
 ```
 
-Jeffrey Moore^1^, James V. Carretta^1,+^, Justin Greenman^2^, Kristin Wilkinson^3^, Lauren Saez^4^, Dan Lawson^3^, Justin Viezbicke^2^, and K. Alexandra Curtis^1^
+```{r echo=FALSE }
+# 1. Top Header Bar (Logo inline with Series Title + Date below right)
+header_df <- data.frame(
+  Col1 = c("", ""),
+  Col2 = c("NOAA Technical Memorandum NMFS", toupper(format(Sys.time(), "%B %Y")))
+)
 
-^1^ Southwest Fisheries Science Center
-Marine Mammal and Sea Turtle Division
-National Marine Fisheries Service
-National Oceanic and Atmospheric Administration
-8901 La Jolla Shores Drive
-La Jolla, CA 92037
+header_ft <- flextable(header_df) %>%
+  delete_part(part = "header") %>%
+  border_remove() %>%
+  compose(
+    i = 1, j = 1,
+    value = as_paragraph(as_image(src = logo_path, width = 1, height = 1))
+  ) %>%
+  merge_h(i = 2, part = "body") %>%
+  width(j = 1:2, width = c(1.35, 5.15)) %>%
+  # Row 1 (Logo + Series Title)
+  align(i = 1, j = 1:2, align = "left", part = "body") %>%
+  valign(i = 1, j = 1:2, valign = "center", part = "body") %>%
+  font(i = 1, j = 2, fontname = "Arial", part = "body") %>%
+  fontsize(i = 1, j = 2, size = 16, part = "body") %>%
+  bold(i = 1, j = 2, part = "body") %>%
+  # Row 2 (Date below and to the right)
+  align(i = 2, j = 1, align = "right", part = "body") %>%
+  font(i = 2, j = 1, fontname = "Arial", part = "body") %>%
+  fontsize(i = 2, j = 1, size = 12, part = "body") %>%
+  bold(i = 2, j = 1, part = "body") %>%
+  padding(i = 2, padding.top = 12, padding.bottom = 14, part = "body")
 
-^2^ Protected Resources Division
-West Coast Regional Office
-National Marine Fisheries Service
-National Oceanic and Atmospheric Administration
-501 West Ocean Boulevard, Suite 4200
-Long Beach, CA 90802
+# 2. Centered Cover Page Body 
+center_p <- fp_par(text.align = "center", padding.bottom = 5)
+title_f  <- fp_text(font.family = "Arial", bold = TRUE, font.size = 14)
+author_f <- fp_text(font.family = "Arial", bold = TRUE, font.size = 10.5)
+affil_f  <- fp_text(font.family = "Arial", font.size = 9)
+sup_f    <- fp_text(font.family = "Arial", font.size = 9, vertical.align = "superscript")
+bold_f   <- fp_text(font.family = "Arial", bold = TRUE, font.size = 10.5)
+agency_f <- fp_text(font.family = "Arial", font.size = 10.5)
 
-^3^ Protected Resources Division
-West Coast Regional Office
-National Marine Fisheries Service
-National Oceanic and Atmospheric Administration
-7600 Sand Point Way NE
-Seattle, WA 98115
+body_blocks <- block_list(
+  # Report Title (matches Arial font of header)
+  fpar(
+    ftext("SOURCES OF HUMAN-RELATED INJURY AND MORTALITY FOR U.S. PACIFIC WEST COAST MARINE MAMMAL STOCK ASSESSMENTS, 2020\u20132024", title_f),
+    fp_p = center_p
+  ),
+  
+  fpar(ftext(""), fp_p = center_p),
+  
+  # Authors
+  fpar(
+    ftext("Jeffrey Moore", author_f), ftext("1", sup_f),
+    ftext(", James V. Carretta", author_f), ftext("1,+", sup_f),
+    ftext(", Justin Greenman", author_f), ftext("2", sup_f),
+    ftext(", Kristin Wilkinson", author_f), ftext("3", sup_f),
+    ftext(", Lauren Saez", author_f), ftext("4", sup_f),
+    ftext(", Dan Lawson", author_f), ftext("3", sup_f),
+    ftext(", Justin Viezbicke", author_f), ftext("2", sup_f),
+    ftext(", and K. Alexandra Curtis", author_f), ftext("1", sup_f),
+    fp_p = center_p
+  ),
+  
+  fpar(ftext(""), fp_p = center_p),
+  
+  # Affiliation 1
+  fpar(
+    ftext("1", sup_f),
+    ftext(" Southwest Fisheries Science Center\nMarine Mammal and Sea Turtle Division\nNational Marine Fisheries Service\nNational Oceanic and Atmospheric Administration\n8901 La Jolla Shores Drive\nLa Jolla, CA 92037", affil_f),
+    fp_p = center_p
+  ),
+  
+  # Affiliation 2
+  fpar(
+    ftext("2", sup_f),
+    ftext(" Protected Resources Division\nWest Coast Regional Office\nNational Marine Fisheries Service\nNational Oceanic and Atmospheric Administration\n501 West Ocean Boulevard, Suite 4200\nLong Beach, CA 90802", affil_f),
+    fp_p = center_p
+  ),
+  
+  # Affiliation 3
+  fpar(
+    ftext("3", sup_f),
+    ftext(" Protected Resources Division\nWest Coast Regional Office\nNational Marine Fisheries Service\nNational Oceanic and Atmospheric Administration\n7600 Sand Point Way NE\nSeattle, WA 98115", affil_f),
+    fp_p = center_p
+  ),
+  
+  # Affiliation 4
+  fpar(
+    ftext("4", sup_f),
+    ftext(" Under Contract to Ocean Associates, Inc.\nWest Coast Regional Office\nNational Marine Fisheries Service\nNational Oceanic and Atmospheric Administration\n501 West Ocean Boulevard, Suite 4200\nLong Beach, CA 90802", affil_f),
+    fp_p = center_p
+  ),
+  
+  # Retired footnote
+  fpar(ftext("+", sup_f), ftext(" Retired", affil_f), fp_p = center_p),
+  
+  fpar(ftext(""), fp_p = center_p),
+  
+  # Tech Memo Number
+  fpar(ftext("NOAA-TM-NMFS-SWFSC-XXX", bold_f), fp_p = center_p),
+  
+  fpar(ftext(""), fp_p = center_p),
+  
+  # Bottom Agency Block
+  fpar(
+    ftext("U.S. DEPARTMENT OF COMMERCE\n", bold_f),
+    ftext("National Oceanic and Atmospheric Administration\nNational Marine Fisheries Service\nSouthwest Fisheries Science Center", agency_f),
+    fp_p = center_p
+  )
+)
 
-^4^ Under Contract to Ocean Associates, Inc.
-West Coast Regional Office
-National Marine Fisheries Service
-National Oceanic and Atmospheric Administration
-501 West Ocean Boulevard, Suite 4200
-Long Beach, CA 90802
+header_ft
+body_blocks
+```
 
-^+^ Retired
+<!-- SOURCES OF HUMAN-RELATED INJURY AND MORTALITY FOR U.S. PACIFIC WEST COAST MARINE MAMMAL STOCK ASSESSMENTS, 2020–2024 -->
 
+<!-- Jeffrey Moore^1^, James V. Carretta^1,+^, Justin Greenman^2^, Kristin Wilkinson^3^, Lauren Saez^4^, Dan Lawson^3^, Justin Viezbicke^2^, and K. Alexandra Curtis^1^ -->
 
+<!-- ^1^ Southwest Fisheries Science Center   -->
+<!-- Marine Mammal and Sea Turtle Division   -->
+<!-- National Marine Fisheries Service   -->
+<!-- National Oceanic and Atmospheric Administration   -->
+<!-- 8901 La Jolla Shores Drive   -->
+<!-- La Jolla, CA 92037   -->
+
+<!-- ^2^ Protected Resources Division   -->
+<!-- West Coast Regional Office   -->
+<!-- National Marine Fisheries Service   -->
+<!-- National Oceanic and Atmospheric Administration   -->
+<!-- 501 West Ocean Boulevard, Suite 4200   -->
+<!-- Long Beach, CA 90802   -->
+
+<!-- ^3^ Protected Resources Division   -->
+<!-- West Coast Regional Office   -->
+<!-- National Marine Fisheries Service   -->
+<!-- National Oceanic and Atmospheric Administration   -->
+<!-- 7600 Sand Point Way NE   -->
+<!-- Seattle, WA 98115   -->
+
+<!-- ^4^ Under Contract to Ocean Associates, Inc.   -->
+<!-- West Coast Regional Office   -->
+<!-- National Marine Fisheries Service   -->
+<!-- National Oceanic and Atmospheric Administration   -->
+<!-- 501 West Ocean Boulevard, Suite 4200   -->
+<!-- Long Beach, CA 90802   -->
+
+<!-- ^+^ Retired   -->
+
+<!-- NOAA-TM-NMFS-SWFSC-XXX -->
+
+<!-- U.S. DEPARTMENT OF COMMERCE   -->
+<!-- National Oceanic and Atmospheric Administration   -->
+<!-- National Marine Fisheries Service   -->
+<!-- Southwest Fisheries Science Center   -->
 \newpage
 
 
